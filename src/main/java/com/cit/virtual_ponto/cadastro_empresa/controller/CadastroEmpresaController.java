@@ -5,10 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.cit.virtual_ponto.cadastro_empresa.dto.EmpresaDto;
 import com.cit.virtual_ponto.cadastro_empresa.models.EmpresaEntity;
 import com.cit.virtual_ponto.cadastro_empresa.services.CadastroEmpresaService;
 import com.cit.virtual_ponto.cadastro_empresa.services.ListarEmpresaService;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -25,14 +25,14 @@ public class CadastroEmpresaController {
         this.listarEmpresaService = listarEmpresaService;
     }
 
-    @PostMapping("/cadastrar")
-    public ResponseEntity<EmpresaEntity> cadastrarEmpresa(@RequestBody EmpresaEntity empresa) {
+    @GetMapping("/cadastrar")
+    public ResponseEntity<EmpresaEntity> cadastrarEmpresa(@RequestBody EmpresaDto empresa) {
         EmpresaEntity novoEmpresa = empresaService.cadastrarEmpresa(empresa);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoEmpresa);
     }
 
     @PutMapping("/atualizar")
-    public ResponseEntity<EmpresaEntity> atualizarEmpresa(@RequestBody EmpresaEntity empresa) {
+    public ResponseEntity<EmpresaEntity> atualizarEmpresa(@RequestBody EmpresaDto empresa) {
         EmpresaEntity empresaAtualizada = empresaService.atualizarEmpresa(empresa);
         if (empresaAtualizada != null) {
             return ResponseEntity.ok(empresaAtualizada);
@@ -55,7 +55,8 @@ public class CadastroEmpresaController {
     public ResponseEntity<List<EmpresaEntity>> listarEmpresas() {
         List<EmpresaEntity> empresas = listarEmpresaService.listarEmpresas();
         return ResponseEntity.ok(empresas);
-    }
+}
+
 
     @GetMapping("/buscar-nome")
     public ResponseEntity<List<EmpresaEntity>> buscarEmpresaPorNome(@RequestParam String nomeEmpresa) {

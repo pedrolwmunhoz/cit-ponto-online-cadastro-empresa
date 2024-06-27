@@ -3,7 +3,6 @@ package com.cit.virtual_ponto.cadastro_empresa.models;
 import lombok.Data;
 
 import java.util.List;
-
 import jakarta.persistence.*;
 
 @Data
@@ -23,7 +22,7 @@ public class EmpresaEntity {
     private String razaoSocial;
 
     @Column(name = "cnpj", nullable = false, unique = true)
-    private String cnpj; //aaaqq
+    private String cnpj;
 
     @Column(name = "logradouro", nullable = false)
     private String logradouro;
@@ -51,7 +50,6 @@ public class EmpresaEntity {
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-
 
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FuncionarioEntity> funcionarios;
