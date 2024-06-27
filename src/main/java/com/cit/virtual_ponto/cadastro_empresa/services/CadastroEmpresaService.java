@@ -133,18 +133,18 @@ public class CadastroEmpresaService {
 
     private void encryptEmpresaFields(EmpresaEntity novaEmpresa, EmpresaDto empresa) {
         novaEmpresa.setEmpresaId(empresa.getEmpresaId());
-        novaEmpresa.setNomeEmpresa(encryptor.encrypt(empresa.getNomeEmpresa()));
-        novaEmpresa.setRazaoSocial(encryptor.encrypt(empresa.getRazaoSocial()));
-        novaEmpresa.setCnpj(encryptor.encrypt(empresa.getCnpj()));
-        novaEmpresa.setLogradouro(encryptor.encrypt(empresa.getLogradouro()));
-        novaEmpresa.setNumero(encryptor.encrypt(empresa.getNumero()));
-        novaEmpresa.setComplemento(encryptor.encrypt(empresa.getComplemento()));
-        novaEmpresa.setBairro(encryptor.encrypt(empresa.getBairro()));
-        novaEmpresa.setCidade(encryptor.encrypt(empresa.getCidade()));
-        novaEmpresa.setEstado(encryptor.encrypt(empresa.getEstado()));
-        novaEmpresa.setCep(encryptor.encrypt(empresa.getCep()));
-        novaEmpresa.setTelefone(encryptor.encrypt(empresa.getTelefone()));
-        novaEmpresa.setEmail(encryptor.encrypt(empresa.getEmail()));
+        novaEmpresa.setNomeEmpresa(encrypt(empresa.getNomeEmpresa()));
+        novaEmpresa.setRazaoSocial(encrypt(empresa.getRazaoSocial()));
+        novaEmpresa.setCnpj(encrypt(empresa.getCnpj()));
+        novaEmpresa.setLogradouro(encrypt(empresa.getLogradouro()));
+        novaEmpresa.setNumero(encrypt(empresa.getNumero()));
+        novaEmpresa.setComplemento(encrypt(empresa.getComplemento()));
+        novaEmpresa.setBairro(encrypt(empresa.getBairro()));
+        novaEmpresa.setCidade(encrypt(empresa.getCidade()));
+        novaEmpresa.setEstado(encrypt(empresa.getEstado()));
+        novaEmpresa.setCep(encrypt(empresa.getCep()));
+        novaEmpresa.setTelefone(encrypt(empresa.getTelefone()));
+        novaEmpresa.setEmail(encrypt(empresa.getEmail()));
 
     }
 
