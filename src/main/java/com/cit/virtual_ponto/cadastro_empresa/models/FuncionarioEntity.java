@@ -1,7 +1,7 @@
 package com.cit.virtual_ponto.cadastro_empresa.models;
 
 import lombok.Data;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Data
@@ -13,6 +13,7 @@ public class FuncionarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long funcionarioId;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "empresa_id", nullable = false)
     private EmpresaEntity empresa;
