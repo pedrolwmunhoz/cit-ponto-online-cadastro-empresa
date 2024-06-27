@@ -109,7 +109,7 @@ public class CadastroEmpresaService {
         Optional<EmpresaEntity> optionalEmpresaByEmail = cadastroEmpresaRepository.findByEmail(email);
         if (optionalEmpresaByEmail.isPresent()) {
             throw new ErrosSistema.EmpresaException(
-                    "Email já cadastrado: " + email);
+                    "Email já cadastrado: " + encryptor.decrypt(email));
         }
 
         // Verifica se o cnpj já está cadastrado
@@ -117,7 +117,7 @@ public class CadastroEmpresaService {
         Optional<EmpresaEntity> optionalEmpresaByNome = cadastroEmpresaRepository.findByCnpj(cnpj);
         if (optionalEmpresaByNome.isPresent()) {
             throw new ErrosSistema.EmpresaException(
-                    "Cnpj já cadastrado: " + cnpj);
+                    "Cnpj já cadastrado: " + encryptor.decrypt(cnpj));
         }
 
         // Verifica se o telefone já está cadastrado
@@ -126,7 +126,7 @@ public class CadastroEmpresaService {
                 .findByTelefone(telefone);
         if (optionalEmpresaByTelefone.isPresent()) {
             throw new ErrosSistema.EmpresaException(
-                    "Telefone já cadastrado: " + telefone);
+                    "Telefone já cadastrado: " + encryptor.decrypt(telefone));
         }
 
     }
