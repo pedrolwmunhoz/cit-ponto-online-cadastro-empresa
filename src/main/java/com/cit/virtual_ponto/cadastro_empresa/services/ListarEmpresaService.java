@@ -3,7 +3,6 @@ package com.cit.virtual_ponto.cadastro_empresa.services;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.cit.virtual_ponto.cadastro_empresa.exceptions.EnumErrosCadastroEmpresa;
@@ -13,12 +12,12 @@ import com.cit.virtual_ponto.cadastro_empresa.repositories.CadastroEmpresaReposi
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ListarEmpresaService {
 
     private CadastroEmpresaRepository cadastroEmpresaRepository;
-
 
     private StringEncryptor encryptor;
 
@@ -32,44 +31,36 @@ public class ListarEmpresaService {
         this.cadastroEmpresaRepository = cadastroEmpresaRepository;
     }
 
-    
     public List<EmpresaEntity> listarEmpresas() {
-        try {
-            List<EmpresaEntity> empresas = cadastroEmpresaRepository.findAll();
-            empresas.forEach(this::decryptEmpresaFields);
-            return empresas;
-        } catch (DataAccessException e) {
-            throw new ErrosSistema.DatabaseException(
-                EnumErrosCadastroEmpresa.ERRO_LISTAR_EMPRESA.getMensagemErro(), e);
-        }
+        List<EmpresaEntity> empresas = cadastroEmpresaRepository.findAll();
+        empresas.forEach(this::decryptEmpresaFields);
+        return empresas;
     }
 
-    public Optional<EmpresaEntity> buscarEmpresaPorId(Long id) {
-        try {
-            Optional<EmpresaEntity> empresa = cadastroEmpresaRepository.findById(id);
-            if (empresa.isPresent()) {
-                EmpresaEntity empresaExistente = empresa.get();
-                this.decryptEmpresaFields(empresaExistente);
-                return empresa;
-            } else {
-                throw new ErrosSistema.EmpresaException(
+    public EmpresaEntity buscarEmpresaPorId(Long id) {
+        Optional<EmpresaEntity> empresa = cadastroEmpresaRepository.findById(id);
+        if (empresa.isPresent()) {
+            EmpresaEntity empresaExistente = empresa.get();
+            this.decryptEmpresaFields(empresaExistente);
+            return empresaExistente;
+        } else {
+            throw new ErrosSistema.EmpresaException(
                     EnumErrosCadastroEmpresa.EMPRESA_NAO_ENCONTRADO_ID.getMensagemErro() + id);
-            }
-        } catch (Exception e) {
-            throw new ErrosSistema.DatabaseException(
-                EnumErrosCadastroEmpresa.ERRO_BUSCAR_EMPRESA.getMensagemErro(), e);
         }
     }
 
     public List<EmpresaEntity> buscarEmpresaPorNome(String nomeEmpresa) {
-        try {
-            List<EmpresaEntity> empresas = cadastroEmpresaRepository.findByNomeEmpresaContainingIgnoreCase(nomeEmpresa);
-            empresas.forEach(this::decryptEmpresaFields);
-            return empresas;
-        } catch (Exception e) {
-            throw new ErrosSistema.DatabaseException(
-                EnumErrosCadastroEmpresa.ERRO_BUSCAR_EMPRESA.getMensagemErro(), e);
-        }
+
+        // recupera lista de todas as empresas
+        List<EmpresaEntity> empresas = cadastroEmpresaRepository.findAll();
+        empresas.forEach(this::decryptEmpresaFields);
+
+        // filtra por nome
+        List<EmpresaEntity> empresasFiltrada = empresas.stream()
+                .filter(empresa -> nomeEmpresa.equalsIgnoreCase(empresa.getNomeEmpresa()))
+                .collect(Collectors.toList());
+
+        return empresasFiltrada;
     }
 
     private void decryptEmpresaFields(EmpresaEntity empresa) {

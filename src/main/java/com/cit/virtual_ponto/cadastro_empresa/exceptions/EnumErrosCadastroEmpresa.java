@@ -1,7 +1,7 @@
 package com.cit.virtual_ponto.cadastro_empresa.exceptions;
 
 public enum EnumErrosCadastroEmpresa {
-    EMPRESA_NAO_ENCONTRADO_ID("Empresa não encontrado com o ID:"),
+    EMPRESA_NAO_ENCONTRADO_ID("Empresa com o ID não encontrado"),
 
     ERRO_CADASTRAR_EMPRESA("Erro ao cadastrar empresa"),
     ERRO_ATUALIZAR_EMPRESA("Erro ao atualizar empresa"),

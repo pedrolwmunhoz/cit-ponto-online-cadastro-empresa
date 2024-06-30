@@ -35,62 +35,51 @@ public class CadastroEmpresaService {
 
     @Transactional
     public EmpresaEntity cadastrarEmpresa(EmpresaDto empresa) {
-        try {
-            // valida se já está cadastradada
-            this.validarCadastroEmpresa(empresa);
 
-            EmpresaEntity novaEmpresa = new EmpresaEntity();
-            //criptografa as informações da nova empresa
-            this.encryptEmpresaFields(novaEmpresa, empresa);
+        // valida se já está cadastradada
+        this.validarCadastroEmpresa(empresa);
 
-            // salva a nova empresa
-            return cadastroEmpresaRepository.save(novaEmpresa);
-        } catch (Exception e) {
-            throw new ErrosSistema.DatabaseException(
-                EnumErrosCadastroEmpresa.ERRO_CADASTRAR_EMPRESA.getMensagemErro(), e);
-        }
+        EmpresaEntity novaEmpresa = new EmpresaEntity();
+        //criptografa as informações da nova empresa
+        this.encryptEmpresaFields(novaEmpresa, empresa);
+
+        // salva a nova empresa
+        return cadastroEmpresaRepository.save(novaEmpresa);
     }
 
     @Transactional
     public EmpresaEntity atualizarEmpresa(EmpresaDto empresa) {
-        try {
-            
-            Long empresaId = empresa.getEmpresaId();
-            Optional<EmpresaEntity> optionalEmpresa = cadastroEmpresaRepository.findById(empresaId);
 
-            //valida se empresa existe
-            if (optionalEmpresa.isPresent()) {
+        Long empresaId = empresa.getEmpresaId();
+        Optional<EmpresaEntity> optionalEmpresa = cadastroEmpresaRepository.findById(empresaId);
 
-                EmpresaEntity empresaAtualizada = optionalEmpresa.get();
-                //criptografa as informações da empresa
-                this.encryptEmpresaFields(empresaAtualizada, empresa);
+        //valida se empresa existe
+        if (optionalEmpresa.isPresent()) {
 
-                //salva empresaAtualizada
-                return cadastroEmpresaRepository.save(empresaAtualizada);
+            EmpresaEntity empresaAtualizada = optionalEmpresa.get();
+            //criptografa as informações da empresa
+            this.encryptEmpresaFields(empresaAtualizada, empresa);
 
-            }  else {
-                throw new ErrosSistema.EmpresaException(
-                    EnumErrosCadastroEmpresa.EMPRESA_NAO_ENCONTRADO_ID.getMensagemErro() + empresaId + " empresa inexistente");
-            }
-        } catch (Exception e) {
-            throw new ErrosSistema.DatabaseException(
-                EnumErrosCadastroEmpresa.ERRO_ATUALIZAR_EMPRESA.getMensagemErro(), e);
+            //salva empresaAtualizada
+            return cadastroEmpresaRepository.save(empresaAtualizada);
+
+        }  else {
+            throw new ErrosSistema.EmpresaException(
+                EnumErrosCadastroEmpresa.EMPRESA_NAO_ENCONTRADO_ID.getMensagemErro());
         }
     }
     
    @Transactional
-    public boolean excluirEmpresa(Long id) {
-        try {
-            if (cadastroEmpresaRepository.existsById(id)) {
-                cadastroEmpresaRepository.deleteById(id);
-                return true;
-            } else {
-                throw new ErrosSistema.EmpresaException(
-                    EnumErrosCadastroEmpresa.EMPRESA_NAO_ENCONTRADO_ID.getMensagemErro() + id + " empresa inexistente");
-            }
-        } catch (Exception e) {
-            throw new ErrosSistema.DatabaseException(
-                EnumErrosCadastroEmpresa.ERRO_EXCLUIR_EMPRESA.getMensagemErro(), e);
+    public EmpresaEntity excluirEmpresa(Long id) {
+        Optional<EmpresaEntity> optionalEmpresa = cadastroEmpresaRepository.findById(id);
+
+        if (optionalEmpresa.isPresent()) {
+            EmpresaEntity empresaExcluida = optionalEmpresa.get();
+            cadastroEmpresaRepository.deleteById(id);
+            return empresaExcluida;
+        } else {
+            throw new ErrosSistema.EmpresaException(
+                EnumErrosCadastroEmpresa.EMPRESA_NAO_ENCONTRADO_ID.getMensagemErro());
         }
     }
 
@@ -101,7 +90,7 @@ public class CadastroEmpresaService {
         Optional<EmpresaEntity> optionalEmpresa = cadastroEmpresaRepository.findById(empresaId);
         if (optionalEmpresa.isPresent()) {
             throw new ErrosSistema.EmpresaException(
-                    "Empresa já cadastrada com id: " + empresaId);
+                    "Empresa já cadastrada com id.");
         }
 
         // Verifica se o email já está cadastrado
@@ -109,7 +98,7 @@ public class CadastroEmpresaService {
         Optional<EmpresaEntity> optionalEmpresaByEmail = cadastroEmpresaRepository.findByEmail(email);
         if (optionalEmpresaByEmail.isPresent()) {
             throw new ErrosSistema.EmpresaException(
-                    "Email já cadastrado: " + encryptor.decrypt(email));
+                    "Email já cadastrado.");
         }
 
         // Verifica se o cnpj já está cadastrado
@@ -117,7 +106,7 @@ public class CadastroEmpresaService {
         Optional<EmpresaEntity> optionalEmpresaByNome = cadastroEmpresaRepository.findByCnpj(cnpj);
         if (optionalEmpresaByNome.isPresent()) {
             throw new ErrosSistema.EmpresaException(
-                    "Cnpj já cadastrado: " + encryptor.decrypt(cnpj));
+                    "Cnpj já cadastrado.");
         }
 
         // Verifica se o telefone já está cadastrado
@@ -126,7 +115,7 @@ public class CadastroEmpresaService {
                 .findByTelefone(telefone);
         if (optionalEmpresaByTelefone.isPresent()) {
             throw new ErrosSistema.EmpresaException(
-                    "Telefone já cadastrado: " + encryptor.decrypt(telefone));
+                    "Telefone já cadastrado.");
         }
 
     }
