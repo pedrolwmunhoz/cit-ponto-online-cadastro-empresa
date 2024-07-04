@@ -9,6 +9,8 @@ import com.cit.virtual_ponto.cadastro_empresa.dto.EmpresaDto;
 import com.cit.virtual_ponto.cadastro_empresa.models.EmpresaEntity;
 import com.cit.virtual_ponto.cadastro_empresa.services.CadastroEmpresaService;
 import com.cit.virtual_ponto.cadastro_empresa.services.ListarEmpresaService;
+import com.cit.virtual_ponto.cadastro_empresa.services.ValidaLoginEmpresaService;
+
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.Valid;
@@ -23,11 +25,13 @@ public class CadastroEmpresaController {
 
     private final CadastroEmpresaService empresaService;
     private final ListarEmpresaService listarEmpresaService;
+    private final ValidaLoginEmpresaService validaLoginEmpresaService;
 
     @Autowired
-    public CadastroEmpresaController(CadastroEmpresaService empresaService, ListarEmpresaService listarEmpresaService) {
+    public CadastroEmpresaController(CadastroEmpresaService empresaService, ListarEmpresaService listarEmpresaService, ValidaLoginEmpresaService validaLoginEmpresaService) {
         this.empresaService = empresaService;
         this.listarEmpresaService = listarEmpresaService;
+        this.validaLoginEmpresaService = validaLoginEmpresaService;
     }
 
     @PostMapping("/cadastrar")
@@ -66,6 +70,12 @@ public class CadastroEmpresaController {
     public ResponseEntity<EmpresaEntity> buscarEmpresaPorId(
             @PathVariable @Min(value = 1, message = "O ID da empresa deve ser um valor positivo") Long id) {
         return ResponseEntity.ok(listarEmpresaService.buscarEmpresaPorId(id));
+    }
+
+
+    @PostMapping("/validar-login")
+    public ResponseEntity<EmpresaEntity> validarLogin(@RequestBody @Valid EmpresaDto empresa) {
+        return ResponseEntity.ok(validaLoginEmpresaService.validarLogin(empresa));
     }
 
 }
