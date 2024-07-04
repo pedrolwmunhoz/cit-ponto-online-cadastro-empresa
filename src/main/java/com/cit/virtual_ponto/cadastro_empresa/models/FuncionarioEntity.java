@@ -15,19 +15,22 @@ public class FuncionarioEntity {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "empresa_id", nullable = false)
+    @JoinColumn(name = "empresa_id")
     private EmpresaEntity empresa;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String nome;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String cpf;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(unique = true)
+    @Column(nullable = false)
+    private String senha;
+
+    @Column(unique = true, nullable = false)
     private String telefone;
 
 }

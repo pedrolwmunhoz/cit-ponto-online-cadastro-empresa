@@ -58,6 +58,10 @@ public class EmpresaDto {
     @Size(max = 100, message = "O email deve ter no máximo 100 caracteres")
     private String email;
 
+    @NotBlank(message = "Senha não pode ser vazio")
+    @Size(min = 8, max = 100, message = "Senha deve conter 8 ou mais caracteres")
+    private String senha;
+
     @NotNull(message = "A lista de funcionários não pode ser nula")
     private List<@Valid FuncionarioDto> funcionarios;
 }

@@ -134,6 +134,7 @@ public class CadastroEmpresaService {
         novaEmpresa.setCep(encrypt(empresa.getCep()));
         novaEmpresa.setTelefone(encrypt(empresa.getTelefone()));
         novaEmpresa.setEmail(encrypt(empresa.getEmail()));
+        novaEmpresa.setSenha(encrypt(empresa.getSenha()));
 
     }
 

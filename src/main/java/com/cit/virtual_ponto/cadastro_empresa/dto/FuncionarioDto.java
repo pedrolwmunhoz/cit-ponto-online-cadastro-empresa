@@ -24,6 +24,10 @@ public class FuncionarioDto {
     @Email(message = "Email deve ser válido")
     private String email;
 
+    @NotBlank(message = "Senha não pode ser vazio")
+    @Size(min = 8, max = 100, message = "Senha deve conter 8 ou mais caracteres")
+    private String senha;
+
     @NotBlank(message = "Telefone não pode ser vazio")
     @Pattern(regexp = "\\d{10,11}", message = "Telefone deve conter 10 ou 11 dígitos numéricos")
     private String telefone;

@@ -30,8 +30,23 @@ public class CadastroEmpresaController {
         this.listarEmpresaService = listarEmpresaService;
     }
 
-    @PostMapping("/cadastrar")
-    public ResponseEntity<EmpresaEntity> cadastrarEmpresa(@RequestBody @Valid EmpresaDto empresa) {
+    @GetMapping("/cadastrar")
+    public ResponseEntity<EmpresaEntity> cadastrarEmpresa() {
+        EmpresaDto empresa = new EmpresaDto();
+        empresa.setEmpresaId(1L);
+        empresa.setNomeEmpresa("Empresa Teste");
+        empresa.setRazaoSocial("Razão Social Teste");
+        empresa.setCnpj("12345678901234"); // Preencha com um CNPJ válido
+        empresa.setLogradouro("Rua Teste");
+        empresa.setNumero("123");
+        empresa.setComplemento("Complemento Teste");
+        empresa.setBairro("Bairro Teste");
+        empresa.setCidade("Cidade Teste");
+        empresa.setEstado("SP"); // Exemplo de estado
+        empresa.setCep("12345-678"); // Exemplo de CEP
+        empresa.setTelefone("(12) 3456-7890"); // Exemplo de telefone
+        empresa.setEmail("empresa@teste.com");
+        empresa.setSenha("12345678");
         EmpresaEntity novoEmpresa = empresaService.cadastrarEmpresa(empresa);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoEmpresa);
     }

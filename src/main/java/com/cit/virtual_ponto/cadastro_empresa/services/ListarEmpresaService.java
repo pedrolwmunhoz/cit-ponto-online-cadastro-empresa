@@ -76,6 +76,7 @@ public class ListarEmpresaService {
         empresa.setCep(decrypt(empresa.getCep()));
         empresa.setTelefone(decrypt(empresa.getTelefone()));
         empresa.setEmail(decrypt(empresa.getEmail()));
+        empresa.setSenha(decrypt(empresa.getSenha()));
     }
 
     public String decrypt(String encryptedValue) {
