@@ -5,12 +5,14 @@ import java.util.Optional;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import com.cit.virtual_ponto.cadastro_empresa.dto.EmpresaDto;
 import com.cit.virtual_ponto.cadastro_empresa.exceptions.ErrosSistema;
 import com.cit.virtual_ponto.cadastro_empresa.models.EmpresaEntity;
 import com.cit.virtual_ponto.cadastro_empresa.repositories.CadastroEmpresaRepository;
 
+@Service
 public class ValidaLoginEmpresaService {
 
     private CadastroEmpresaRepository cadastroEmpresaRepository;
