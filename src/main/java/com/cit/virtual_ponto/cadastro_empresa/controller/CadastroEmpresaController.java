@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.cit.virtual_ponto.cadastro_empresa.dto.EmpresaDto;
+import com.cit.virtual_ponto.cadastro_empresa.dto.LoginRequestDto;
 import com.cit.virtual_ponto.cadastro_empresa.models.EmpresaEntity;
 import com.cit.virtual_ponto.cadastro_empresa.services.CadastroEmpresaService;
 import com.cit.virtual_ponto.cadastro_empresa.services.ListarEmpresaService;
@@ -74,8 +75,8 @@ public class CadastroEmpresaController {
 
 
     @PostMapping("/validar-login")
-    public ResponseEntity<EmpresaEntity> validarLogin(@RequestBody @Valid EmpresaDto empresa) {
-        return ResponseEntity.ok(validaLoginEmpresaService.validarLogin(empresa));
+    public ResponseEntity<EmpresaEntity> validarLogin(@RequestBody @Valid LoginRequestDto loginRequestDto) {
+        return ResponseEntity.ok(validaLoginEmpresaService.validarLogin(loginRequestDto));
     }
 
 }
