@@ -4,7 +4,8 @@ import org.jasypt.encryption.StringEncryptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
+import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
@@ -16,11 +17,17 @@ public class EncryptorConfig {
     @Bean("jasyptStringEncryptor")
     @Primary
     public StringEncryptor stringEncryptor() {
-        StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-        encryptor.setPassword(password);
-        encryptor.setAlgorithm("PBEWithMD5AndDES");
+        PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+        SimpleStringPBEConfig config = new SimpleStringPBEConfig();
+        config.setPassword(password);
+        config.setAlgorithm("PBEWithHmacSHA512AndAES_256");
+        config.setKeyObtentionIterations("1000");
+        config.setPoolSize("1");
+        config.setProviderName("SunJCE");
+        config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
+        config.setIvGeneratorClassName("org.jasypt.iv.RandomIvGenerator");
+        config.setStringOutputType("hexadecimal");
+        encryptor.setConfig(config);
         return encryptor;
     }
 }
-
-
