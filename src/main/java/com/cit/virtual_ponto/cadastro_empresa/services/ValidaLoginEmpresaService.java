@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.cit.virtual_ponto.cadastro_empresa.dto.LoginRequestDto;
 import com.cit.virtual_ponto.cadastro_empresa.exceptions.ErrosSistema;
-import com.cit.virtual_ponto.cadastro_empresa.models.EmpresaEntity;
+import com.cit.virtual_ponto.cadastro_empresa.models.PessoaJuridica;
 import com.cit.virtual_ponto.cadastro_empresa.repositories.CadastroEmpresaRepository;
 
 @Service
@@ -25,15 +25,15 @@ public class ValidaLoginEmpresaService {
     @Autowired
     private CadastroEmpresaRepository cadastroEmpresaRepository;
 
-    public EmpresaEntity validarLogin(LoginRequestDto loginRequestDto) {
-        List<EmpresaEntity> empresas = cadastroEmpresaRepository.findAll();
+    public PessoaJuridica validarLogin(LoginRequestDto loginRequestDto) {
+        List<PessoaJuridica> empresas = cadastroEmpresaRepository.findAll();
 
-        Optional<EmpresaEntity> empresaOptional = empresas.stream()
+        Optional<PessoaJuridica> empresaOptional = empresas.stream()
                 .filter(empresa -> encryptor.decrypt(empresa.getEmail()).equals(loginRequestDto.getEmail()))
                 .findFirst();
 
         if (empresaOptional.isPresent()) {
-            EmpresaEntity empresa = empresaOptional.get();
+            PessoaJuridica empresa = empresaOptional.get();
 
             String senhaDescriptografada = encryptor.decrypt(empresa.getSenha());
 
@@ -46,20 +46,23 @@ public class ValidaLoginEmpresaService {
     }
 
 
-    private void decryptEmpresaFields(EmpresaEntity empresa) {
-        empresa.setNomeEmpresa(encryptor.decrypt(empresa.getNomeEmpresa()));
+    private void decryptEmpresaFields(PessoaJuridica empresa) {
+        empresa.setNome(encryptor.decrypt(empresa.getNome()));
         empresa.setRazaoSocial(encryptor.decrypt(empresa.getRazaoSocial()));
+        empresa.setInscricaoEstadual(encryptor.decrypt(empresa.getInscricaoEstadual()));
         empresa.setCnpj(encryptor.decrypt(empresa.getCnpj()));
-        empresa.setLogradouro(encryptor.decrypt(empresa.getLogradouro()));
-        empresa.setNumero(encryptor.decrypt(empresa.getNumero()));
-        empresa.setComplemento(encryptor.decrypt(empresa.getComplemento()));
-        empresa.setBairro(encryptor.decrypt(empresa.getBairro()));
-        empresa.setCidade(encryptor.decrypt(empresa.getCidade()));
-        empresa.setEstado(encryptor.decrypt(empresa.getEstado()));
-        empresa.setCep(encryptor.decrypt(empresa.getCep()));
         empresa.setTelefone(encryptor.decrypt(empresa.getTelefone()));
         empresa.setEmail(encryptor.decrypt(empresa.getEmail()));
         empresa.setSenha(encryptor.decrypt(empresa.getSenha()));
+
+        empresa.getEndereco().setLogradouro(encryptor.decrypt(empresa.getEndereco().getLogradouro()));
+        empresa.getEndereco().setNumero(encryptor.decrypt(empresa.getEndereco().getNumero()));
+        empresa.getEndereco().setComplemento(encryptor.decrypt(empresa.getEndereco().getComplemento()));
+        empresa.getEndereco().setBairro(encryptor.decrypt(empresa.getEndereco().getBairro()));
+        empresa.getEndereco().setCidade(encryptor.decrypt(empresa.getEndereco().getCidade()));
+        empresa.getEndereco().setEstado(encryptor.decrypt(empresa.getEndereco().getEstado()));
+        empresa.getEndereco().setCep(encryptor.decrypt(empresa.getEndereco().getCep()));
+
     }
 
 }

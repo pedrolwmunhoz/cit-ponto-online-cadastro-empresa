@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 import com.cit.virtual_ponto.cadastro_empresa.dto.EmpresaDto;
 import com.cit.virtual_ponto.cadastro_empresa.exceptions.EnumErrosCadastroEmpresa;
 import com.cit.virtual_ponto.cadastro_empresa.exceptions.ErrosSistema;
-import com.cit.virtual_ponto.cadastro_empresa.models.EmpresaEntity;
+import com.cit.virtual_ponto.cadastro_empresa.models.Endereco;
+import com.cit.virtual_ponto.cadastro_empresa.models.PessoaJuridica;
 import com.cit.virtual_ponto.cadastro_empresa.repositories.CadastroEmpresaRepository;
 
 import java.util.Optional;
@@ -34,12 +35,12 @@ public class CadastroEmpresaService {
     }
 
     @Transactional
-    public EmpresaEntity cadastrarEmpresa(EmpresaDto empresa) {
+    public PessoaJuridica cadastrarEmpresa(EmpresaDto empresa) {
 
         // valida se já está cadastradada
         this.validarCadastroEmpresa(empresa);
 
-        EmpresaEntity novaEmpresa = new EmpresaEntity();
+        PessoaJuridica novaEmpresa = new PessoaJuridica();
         //criptografa as informações da nova empresa
         this.encryptEmpresaFields(novaEmpresa, empresa);
 
@@ -48,15 +49,15 @@ public class CadastroEmpresaService {
     }
 
     @Transactional
-    public EmpresaEntity atualizarEmpresa(EmpresaDto empresa) {
+    public PessoaJuridica atualizarEmpresa(EmpresaDto empresa) {
 
-        Long empresaId = empresa.getEmpresaId();
-        Optional<EmpresaEntity> optionalEmpresa = cadastroEmpresaRepository.findById(empresaId);
+        Long empresaId = empresa.getPessoaId();
+        Optional<PessoaJuridica> optionalEmpresa = cadastroEmpresaRepository.findById(empresaId);
 
         //valida se empresa existe
         if (optionalEmpresa.isPresent()) {
 
-            EmpresaEntity empresaAtualizada = optionalEmpresa.get();
+            PessoaJuridica empresaAtualizada = optionalEmpresa.get();
             //criptografa as informações da empresa
             this.encryptEmpresaFields(empresaAtualizada, empresa);
 
@@ -70,11 +71,11 @@ public class CadastroEmpresaService {
     }
     
    @Transactional
-    public EmpresaEntity excluirEmpresa(Long id) {
-        Optional<EmpresaEntity> optionalEmpresa = cadastroEmpresaRepository.findById(id);
+    public PessoaJuridica excluirEmpresa(Long id) {
+        Optional<PessoaJuridica> optionalEmpresa = cadastroEmpresaRepository.findById(id);
 
         if (optionalEmpresa.isPresent()) {
-            EmpresaEntity empresaExcluida = optionalEmpresa.get();
+            PessoaJuridica empresaExcluida = optionalEmpresa.get();
             cadastroEmpresaRepository.deleteById(id);
             return empresaExcluida;
         } else {
@@ -86,8 +87,8 @@ public class CadastroEmpresaService {
     public void validarCadastroEmpresa(EmpresaDto empresa) {
 
         //verifica o id da empresa
-        Long empresaId = empresa.getEmpresaId();
-        Optional<EmpresaEntity> optionalEmpresa = cadastroEmpresaRepository.findById(empresaId);
+        Long empresaId = empresa.getPessoaId();
+        Optional<PessoaJuridica> optionalEmpresa = cadastroEmpresaRepository.findById(empresaId);
         if (optionalEmpresa.isPresent()) {
             throw new ErrosSistema.EmpresaException(
                     "Empresa já cadastrada com id.");
@@ -95,7 +96,7 @@ public class CadastroEmpresaService {
 
         // Verifica se o email já está cadastrado
         String email = this.encrypt(empresa.getEmail());
-        Optional<EmpresaEntity> optionalEmpresaByEmail = cadastroEmpresaRepository.findByEmail(email);
+        Optional<PessoaJuridica> optionalEmpresaByEmail = cadastroEmpresaRepository.findByEmail(email);
         if (optionalEmpresaByEmail.isPresent()) {
             throw new ErrosSistema.EmpresaException(
                     "Email já cadastrado.");
@@ -103,7 +104,7 @@ public class CadastroEmpresaService {
 
         // Verifica se o cnpj já está cadastrado
         String cnpj = this.encrypt(empresa.getCnpj());
-        Optional<EmpresaEntity> optionalEmpresaByNome = cadastroEmpresaRepository.findByCnpj(cnpj);
+        Optional<PessoaJuridica> optionalEmpresaByNome = cadastroEmpresaRepository.findByCnpj(cnpj);
         if (optionalEmpresaByNome.isPresent()) {
             throw new ErrosSistema.EmpresaException(
                     "Cnpj já cadastrado.");
@@ -111,7 +112,7 @@ public class CadastroEmpresaService {
 
         // Verifica se o telefone já está cadastrado
         String telefone = this.encrypt(empresa.getTelefone());
-        Optional<EmpresaEntity> optionalEmpresaByTelefone = cadastroEmpresaRepository
+        Optional<PessoaJuridica> optionalEmpresaByTelefone = cadastroEmpresaRepository
                 .findByTelefone(telefone);
         if (optionalEmpresaByTelefone.isPresent()) {
             throw new ErrosSistema.EmpresaException(
@@ -120,22 +121,25 @@ public class CadastroEmpresaService {
 
     }
 
-    private void encryptEmpresaFields(EmpresaEntity novaEmpresa, EmpresaDto empresa) {
-        novaEmpresa.setEmpresaId(empresa.getEmpresaId());
-        novaEmpresa.setNomeEmpresa(encrypt(empresa.getNomeEmpresa()));
+    private void encryptEmpresaFields(PessoaJuridica novaEmpresa, EmpresaDto empresa) {
+        novaEmpresa.setNome(encrypt(empresa.getNome()));
         novaEmpresa.setRazaoSocial(encrypt(empresa.getRazaoSocial()));
+        novaEmpresa.setInscricaoEstadual(encrypt(empresa.getInscricaoEstadual()));
         novaEmpresa.setCnpj(encrypt(empresa.getCnpj()));
-        novaEmpresa.setLogradouro(encrypt(empresa.getLogradouro()));
-        novaEmpresa.setNumero(encrypt(empresa.getNumero()));
-        novaEmpresa.setComplemento(encrypt(empresa.getComplemento()));
-        novaEmpresa.setBairro(encrypt(empresa.getBairro()));
-        novaEmpresa.setCidade(encrypt(empresa.getCidade()));
-        novaEmpresa.setEstado(encrypt(empresa.getEstado()));
-        novaEmpresa.setCep(encrypt(empresa.getCep()));
         novaEmpresa.setTelefone(encrypt(empresa.getTelefone()));
         novaEmpresa.setEmail(encrypt(empresa.getEmail()));
         novaEmpresa.setSenha(encrypt(empresa.getSenha()));
-
+        
+        Endereco endereco = new Endereco();
+        endereco.setLogradouro(encrypt(empresa.getEndereco().getLogradouro()));
+        endereco.setNumero(encrypt(empresa.getEndereco().getNumero()));
+        endereco.setComplemento(encrypt(empresa.getEndereco().getComplemento()));
+        endereco.setBairro(encrypt(empresa.getEndereco().getBairro()));
+        endereco.setCidade(encrypt(empresa.getEndereco().getCidade()));
+        endereco.setEstado(encrypt(empresa.getEndereco().getEstado()));
+        endereco.setCep(encrypt(empresa.getEndereco().getCep()));
+        novaEmpresa.setEndereco(endereco);
+        
     }
 
     public String encrypt(String encryptedValue) {

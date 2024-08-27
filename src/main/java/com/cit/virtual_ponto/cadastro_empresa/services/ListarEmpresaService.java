@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.cit.virtual_ponto.cadastro_empresa.exceptions.EnumErrosCadastroEmpresa;
 import com.cit.virtual_ponto.cadastro_empresa.exceptions.ErrosSistema;
-import com.cit.virtual_ponto.cadastro_empresa.models.EmpresaEntity;
+import com.cit.virtual_ponto.cadastro_empresa.models.PessoaJuridica;
 import com.cit.virtual_ponto.cadastro_empresa.repositories.CadastroEmpresaRepository;
 
 import java.util.List;
@@ -31,16 +31,16 @@ public class ListarEmpresaService {
         this.cadastroEmpresaRepository = cadastroEmpresaRepository;
     }
 
-    public List<EmpresaEntity> listarEmpresas() {
-        List<EmpresaEntity> empresas = cadastroEmpresaRepository.findAll();
+    public List<PessoaJuridica> listarEmpresas() {
+        List<PessoaJuridica> empresas = cadastroEmpresaRepository.findAll();
         empresas.forEach(this::decryptEmpresaFields);
         return empresas;
     }
 
-    public EmpresaEntity buscarEmpresaPorId(Long id) {
-        Optional<EmpresaEntity> empresa = cadastroEmpresaRepository.findById(id);
+    public PessoaJuridica buscarEmpresaPorId(Long id) {
+        Optional<PessoaJuridica> empresa = cadastroEmpresaRepository.findById(id);
         if (empresa.isPresent()) {
-            EmpresaEntity empresaExistente = empresa.get();
+            PessoaJuridica empresaExistente = empresa.get();
             this.decryptEmpresaFields(empresaExistente);
             return empresaExistente;
         } else {
@@ -49,34 +49,37 @@ public class ListarEmpresaService {
         }
     }
 
-    public List<EmpresaEntity> buscarEmpresaPorNome(String nomeEmpresa) {
+    public List<PessoaJuridica> buscarEmpresaPorNome(String nomeEmpresa) {
 
         // recupera lista de todas as empresas
-        List<EmpresaEntity> empresas = cadastroEmpresaRepository.findAll();
+        List<PessoaJuridica> empresas = cadastroEmpresaRepository.findAll();
         empresas.forEach(this::decryptEmpresaFields);
 
         // filtra por nome
-        List<EmpresaEntity> empresasFiltrada = empresas.stream()
-                .filter(empresa -> nomeEmpresa.equalsIgnoreCase(empresa.getNomeEmpresa()))
+        List<PessoaJuridica> empresasFiltrada = empresas.stream()
+                .filter(empresa -> nomeEmpresa.equalsIgnoreCase(empresa.getNome()))
                 .collect(Collectors.toList());
 
         return empresasFiltrada;
     }
 
-    private void decryptEmpresaFields(EmpresaEntity empresa) {
-        empresa.setNomeEmpresa(decrypt(empresa.getNomeEmpresa()));
+    private void decryptEmpresaFields(PessoaJuridica empresa) {
+        empresa.setNome(decrypt(empresa.getNome()));
         empresa.setRazaoSocial(decrypt(empresa.getRazaoSocial()));
+        empresa.setInscricaoEstadual(decrypt(empresa.getInscricaoEstadual()));
         empresa.setCnpj(decrypt(empresa.getCnpj()));
-        empresa.setLogradouro(decrypt(empresa.getLogradouro()));
-        empresa.setNumero(decrypt(empresa.getNumero()));
-        empresa.setComplemento(decrypt(empresa.getComplemento()));
-        empresa.setBairro(decrypt(empresa.getBairro()));
-        empresa.setCidade(decrypt(empresa.getCidade()));
-        empresa.setEstado(decrypt(empresa.getEstado()));
-        empresa.setCep(decrypt(empresa.getCep()));
         empresa.setTelefone(decrypt(empresa.getTelefone()));
         empresa.setEmail(decrypt(empresa.getEmail()));
         empresa.setSenha(decrypt(empresa.getSenha()));
+
+        empresa.getEndereco().setLogradouro(decrypt(empresa.getEndereco().getLogradouro()));
+        empresa.getEndereco().setNumero(decrypt(empresa.getEndereco().getNumero()));
+        empresa.getEndereco().setComplemento(decrypt(empresa.getEndereco().getComplemento()));
+        empresa.getEndereco().setBairro(decrypt(empresa.getEndereco().getBairro()));
+        empresa.getEndereco().setCidade(decrypt(empresa.getEndereco().getCidade()));
+        empresa.getEndereco().setEstado(decrypt(empresa.getEndereco().getEstado()));
+        empresa.getEndereco().setCep(decrypt(empresa.getEndereco().getCep()));
+
     }
 
     public String decrypt(String encryptedValue) {
