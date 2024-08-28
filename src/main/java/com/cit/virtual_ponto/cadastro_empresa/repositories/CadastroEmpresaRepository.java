@@ -6,11 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.cit.virtual_ponto.cadastro_empresa.models.PessoaJuridica;
 
-public interface CadastroEmpresaRepository extends JpaRepository<PessoaJuridica, Long> {
+public interface CadastroEmpresaRepository extends JpaRepository<PessoaJuridica, Integer> {
     
     Optional<PessoaJuridica> findByEmail(String email);
 
     Optional<PessoaJuridica> findByCnpj(String cnpj);
-
-    Optional<PessoaJuridica> findByTelefone(String telefone);
 }

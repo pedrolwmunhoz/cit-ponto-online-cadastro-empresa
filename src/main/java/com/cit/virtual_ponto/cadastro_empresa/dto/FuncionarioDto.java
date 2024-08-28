@@ -1,22 +1,14 @@
 package com.cit.virtual_ponto.cadastro_empresa.dto;
 
 import lombok.Data;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
-
-import com.cit.virtual_ponto.cadastro_empresa.models.Endereco;
 
 @Data
 public class FuncionarioDto extends PessoaDto {
 
-    @NotNull(message = "Empresa ID não pode ser nulo")
-    private Long empresaId;
-
-    private Long departamentoId;
+    @NotNull(message = "Funcionario ID não pode ser nulo")
+    private Integer funcionario_id;
 
     @NotBlank(message = "CPF não pode ser vazio")
     @Pattern(regexp = "\\d{11}", message = "CPF deve conter 11 dígitos numéricos")
@@ -29,32 +21,22 @@ public class FuncionarioDto extends PessoaDto {
     @NotNull(message = "Data de nascimento não pode ser nula")
     private LocalDate dataNascimento;
 
-    @NotNull(message = "Data de admissão não pode ser nula")
-    private LocalDate dataAdmissao;
+    @NotNull(message = "ID folha pagamento não pode ser nula")
+    private Integer folha_pagamento_id;
 
-    @NotBlank(message = "Cargo não pode ser vazio")
-    private String cargo;
+    @NotBlank(message = "ID empresa não pode ser vazio")
+    private Integer empresa_Id;
 
-    @NotNull(message = "Jornada de trabalho não pode ser nula")
-    private Integer jornadaTrabalho; // Em horas
+    @NotBlank(message = "ID departamento não pode ser vazio")
+    private Integer departamento_id;
 
-    private LocalTime horarioEntrada;
+    @NotBlank(message = "ID cargo não pode ser vazio")
+    private Integer cargo_id;
 
-    private LocalTime horarioSaida;
+    @NotBlank(message = "ID marcação de ponto não pode ser vazio")
+    private Integer marcacao_ponto_id;
 
-    @NotBlank(message = "Tipo de contrato não pode ser vazio")
-    private String tipoContrato;
-
-    @NotNull(message = "Salário não pode ser nulo")
-    private BigDecimal salario;
-
-    private LocalTime intervaloDescanso;
-
-    @NotBlank(message = "Matrícula não pode ser vazia")
-    private String matricula;
-
-    private String situacao;
-
-    private @Valid Endereco endereco;
+    @NotBlank(message = "ID banco de horas não pode ser vazio")
+    private Integer banco_horas_id;
 
 }

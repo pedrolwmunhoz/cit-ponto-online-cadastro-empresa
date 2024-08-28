@@ -2,9 +2,8 @@ package com.cit.virtual_ponto.cadastro_empresa.models;
 
 import lombok.Data;
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -20,41 +19,21 @@ public class PessoaFisica extends Pessoa {
     @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
-    @Column(name = "data_admissao", nullable = false)
-    private LocalDate dataAdmissao;
+    @Column(name = "folha_pagamento_id", nullable = false)
+    private Integer folha_pagamento_id;
 
-    @Column(name = "cargo", nullable = false)
-    private String cargo;
+    @Column(name = "empresa_id", nullable = false)
+    private Integer empresa_id;
 
-    @Column(name = "jornada_trabalho")
-    private Integer jornadaTrabalho; // Em horas
+    @Column(name = "departamento_id", nullable = false)
+    private Integer departamento_id;
 
-    @Column(name = "horario_entrada")
-    private LocalTime horarioEntrada;
+    @Column(name = "cargo_id", nullable = false)
+    private Integer cargo_id;
 
-    @Column(name = "horario_saida")
-    private LocalTime horarioSaida;
+    @Column(name = "marcacao_ponto_id", nullable = false)
+    private Integer marcacao_ponto_id;
 
-    @Column(name = "tipo_contrato", nullable = false)
-    private String tipoContrato;
-
-    @Column(name = "salario", nullable = false)
-    private BigDecimal salario;
-
-    @Column(name = "intervalo_descanso")
-    private LocalTime intervaloDescanso;
-
-    @Column(name = "matricula", nullable = false, unique = true)
-    private String matricula;
-
-    @Column(name = "situacao")
-    private String situacao;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "departamento_id", nullable = false)
-    private Departamento departamento;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "empresa_id", nullable = false)
-    private PessoaJuridica empresa;
+    @Column(name = "banco_horas_id", nullable = false)
+    private Integer banco_horas_id;
 }

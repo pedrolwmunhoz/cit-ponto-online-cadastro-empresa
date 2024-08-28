@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.cit.virtual_ponto.cadastro_empresa.dto.LoginRequestDto;
+import com.cit.virtual_ponto.cadastro_empresa.dto.LoginDto;
 import com.cit.virtual_ponto.cadastro_empresa.exceptions.ErrosSistema;
 import com.cit.virtual_ponto.cadastro_empresa.models.PessoaJuridica;
 import com.cit.virtual_ponto.cadastro_empresa.repositories.CadastroEmpresaRepository;
@@ -25,7 +25,7 @@ public class ValidaLoginEmpresaService {
     @Autowired
     private CadastroEmpresaRepository cadastroEmpresaRepository;
 
-    public PessoaJuridica validarLogin(LoginRequestDto loginRequestDto) {
+    public PessoaJuridica validarLogin(LoginDto loginRequestDto) {
         List<PessoaJuridica> empresas = cadastroEmpresaRepository.findAll();
 
         Optional<PessoaJuridica> empresaOptional = empresas.stream()

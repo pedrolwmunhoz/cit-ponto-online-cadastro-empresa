@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.cit.virtual_ponto.cadastro_empresa.dto.EmpresaDto;
-import com.cit.virtual_ponto.cadastro_empresa.dto.LoginRequestDto;
+import com.cit.virtual_ponto.cadastro_empresa.dto.LoginDto;
 import com.cit.virtual_ponto.cadastro_empresa.models.PessoaJuridica;
 import com.cit.virtual_ponto.cadastro_empresa.services.CadastroEmpresaService;
 import com.cit.virtual_ponto.cadastro_empresa.services.ListarEmpresaService;
@@ -49,7 +49,7 @@ public class CadastroEmpresaController {
 
     @DeleteMapping("/excluir/{id}")
     public ResponseEntity<PessoaJuridica> excluirEmpresa(
-            @PathVariable @Min(value = 1, message = "O ID da empresa deve ser um valor positivo") Long id) {
+            @PathVariable @Min(value = 1, message = "O ID da empresa deve ser um valor positivo") Integer id) {
         PessoaJuridica empresaExcluida = empresaService.excluirEmpresa(id);
         return ResponseEntity.status(HttpStatus.OK).body(empresaExcluida);
     }
@@ -75,7 +75,7 @@ public class CadastroEmpresaController {
 
 
     @PostMapping("/validar-login")
-    public ResponseEntity<PessoaJuridica> validarLogin(@RequestBody @Valid LoginRequestDto loginRequestDto) {
+    public ResponseEntity<PessoaJuridica> validarLogin(@RequestBody @Valid LoginDto loginRequestDto) {
         return ResponseEntity.ok(validaLoginEmpresaService.validarLogin(loginRequestDto));
     }
 
