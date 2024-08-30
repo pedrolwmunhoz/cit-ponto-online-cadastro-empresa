@@ -37,7 +37,7 @@ public class ListarEmpresaService {
         return empresas;
     }
 
-    public PessoaJuridica buscarEmpresaPorId(Long id) {
+    public PessoaJuridica buscarEmpresaPorId(Integer id) {
         Optional<PessoaJuridica> empresa = cadastroEmpresaRepository.findById(id);
         if (empresa.isPresent()) {
             PessoaJuridica empresaExistente = empresa.get();
@@ -64,14 +64,18 @@ public class ListarEmpresaService {
     }
 
     private void decryptEmpresaFields(PessoaJuridica empresa) {
-        empresa.setNome(decrypt(empresa.getNome()));
-        empresa.setRazaoSocial(decrypt(empresa.getRazaoSocial()));
-        empresa.setInscricaoEstadual(decrypt(empresa.getInscricaoEstadual()));
-        empresa.setCnpj(decrypt(empresa.getCnpj()));
-        empresa.setTelefone(decrypt(empresa.getTelefone()));
-        empresa.setEmail(decrypt(empresa.getEmail()));
-        empresa.setSenha(decrypt(empresa.getSenha()));
 
+        empresa.setNome(decrypt(empresa.getNome()));
+        empresa.setInscricao_estadual(decrypt(empresa.getInscricao_estadual()));
+        empresa.setCnpj(decrypt(empresa.getCnpj()));
+        empresa.setEmail(decrypt(empresa.getEmail()));
+
+        empresa.getTelefone().setDdd(decrypt(empresa.getTelefone().getDdd()));
+        empresa.getTelefone().setNumero(decrypt(empresa.getTelefone().getNumero()));
+
+        empresa.getLogin().setEmail(decrypt(empresa.getLogin().getEmail()));
+        empresa.getLogin().setSenhaUsuario(decrypt(empresa.getLogin().getSenhaUsuario()));
+        
         empresa.getEndereco().setLogradouro(decrypt(empresa.getEndereco().getLogradouro()));
         empresa.getEndereco().setNumero(decrypt(empresa.getEndereco().getNumero()));
         empresa.getEndereco().setComplemento(decrypt(empresa.getEndereco().getComplemento()));

@@ -7,18 +7,18 @@ import lombok.Data;
 @Entity
 @Table(name = "login")
 public class Login {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "login_id")
+    @Column(name = "login_id", nullable = false)
     private Integer login_id;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "senha")
-    private String senha;
+    @Column(name = "senha_usuario", nullable = false)
+    private String senhaUsuario;
 
-    @Id
     @Column(name = "historico_login_id")
     private Integer historico_login_id;
 }

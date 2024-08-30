@@ -35,7 +35,7 @@ public class ValidaLoginEmpresaService {
         if (empresaOptional.isPresent()) {
             PessoaJuridica empresa = empresaOptional.get();
 
-            String senhaDescriptografada = encryptor.decrypt(empresa.getSenha());
+            String senhaDescriptografada = encryptor.decrypt(empresa.getLogin().getSenhaUsuario());
 
             if (senhaDescriptografada.equals(loginRequestDto.getSenha())) {
                 this.decryptEmpresaFields(empresa);
@@ -48,13 +48,16 @@ public class ValidaLoginEmpresaService {
 
     private void decryptEmpresaFields(PessoaJuridica empresa) {
         empresa.setNome(encryptor.decrypt(empresa.getNome()));
-        empresa.setRazaoSocial(encryptor.decrypt(empresa.getRazaoSocial()));
-        empresa.setInscricaoEstadual(encryptor.decrypt(empresa.getInscricaoEstadual()));
+        empresa.setInscricao_estadual(encryptor.decrypt(empresa.getInscricao_estadual()));
         empresa.setCnpj(encryptor.decrypt(empresa.getCnpj()));
-        empresa.setTelefone(encryptor.decrypt(empresa.getTelefone()));
         empresa.setEmail(encryptor.decrypt(empresa.getEmail()));
-        empresa.setSenha(encryptor.decrypt(empresa.getSenha()));
 
+        empresa.getTelefone().setDdd(encryptor.decrypt(empresa.getTelefone().getDdd()));
+        empresa.getTelefone().setNumero(encryptor.decrypt(empresa.getTelefone().getNumero()));
+
+        empresa.getLogin().setEmail(encryptor.decrypt(empresa.getLogin().getEmail()));
+        empresa.getLogin().setSenhaUsuario(encryptor.decrypt(empresa.getLogin().getSenhaUsuario()));
+        
         empresa.getEndereco().setLogradouro(encryptor.decrypt(empresa.getEndereco().getLogradouro()));
         empresa.getEndereco().setNumero(encryptor.decrypt(empresa.getEndereco().getNumero()));
         empresa.getEndereco().setComplemento(encryptor.decrypt(empresa.getEndereco().getComplemento()));

@@ -38,5 +38,4 @@ public class FuncionarioDto extends PessoaDto {
 
     @NotBlank(message = "ID banco de horas não pode ser vazio")
     private Integer banco_horas_id;
-
 }

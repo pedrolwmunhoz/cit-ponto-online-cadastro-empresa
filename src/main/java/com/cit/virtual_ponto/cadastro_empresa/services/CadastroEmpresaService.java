@@ -15,6 +15,8 @@ import com.cit.virtual_ponto.cadastro_empresa.models.Login;
 import com.cit.virtual_ponto.cadastro_empresa.models.PessoaJuridica;
 import com.cit.virtual_ponto.cadastro_empresa.models.Telefone;
 import com.cit.virtual_ponto.cadastro_empresa.repositories.CadastroEmpresaRepository;
+import com.cit.virtual_ponto.cadastro_empresa.repositories.EnderecoRepository;
+import com.cit.virtual_ponto.cadastro_empresa.repositories.LoginRepository;
 import com.cit.virtual_ponto.cadastro_empresa.repositories.TelefoneRepository;
 
 import java.util.Optional;
@@ -25,6 +27,8 @@ public class CadastroEmpresaService {
     private CadastroEmpresaRepository cadastroEmpresaRepository;
 
     private TelefoneRepository telefoneRepository;
+    private EnderecoRepository enderecoRepository;
+    private LoginRepository loginRepository;
 
     private StringEncryptor encryptor;
 
@@ -35,11 +39,18 @@ public class CadastroEmpresaService {
 
     @Autowired
     public CadastroEmpresaService(
-            CadastroEmpresaRepository cadastroEmpresaRepository, TelefoneRepository telefoneRepository) {
+            CadastroEmpresaRepository cadastroEmpresaRepository, 
+            TelefoneRepository telefoneRepository,
+            EnderecoRepository enderecoRepository,
+            LoginRepository loginRepository
+            ) {
         this.cadastroEmpresaRepository = cadastroEmpresaRepository;
         this.telefoneRepository = telefoneRepository;
+        this.enderecoRepository = enderecoRepository;
+        this.loginRepository = loginRepository;
     }
 
+    //metodo responsavel por cadastrar empresa
     @Transactional
     public PessoaJuridica cadastrarEmpresa(EmpresaDto empresa) {
 
@@ -51,9 +62,14 @@ public class CadastroEmpresaService {
         this.setEmpresaFields(novaEmpresa, empresa);
 
         // salva a nova empresa
+        loginRepository.save(novaEmpresa.getLogin());
+        telefoneRepository.save(novaEmpresa.getTelefone());
+        enderecoRepository.save(novaEmpresa.getEndereco());
+        
         return cadastroEmpresaRepository.save(novaEmpresa);
     }
 
+    //metodo responsavel por atualizar empresa
     @Transactional
     public PessoaJuridica atualizarEmpresa(EmpresaDto empresa) {
 
@@ -75,7 +91,8 @@ public class CadastroEmpresaService {
                 EnumErrosCadastroEmpresa.EMPRESA_NAO_ENCONTRADO_ID.getMensagemErro());
         }
     }
-    
+
+    //metodo responsavel por excluir empresa
    @Transactional
     public PessoaJuridica excluirEmpresa(Integer id) {
         Optional<PessoaJuridica> optionalEmpresa = cadastroEmpresaRepository.findById(id);
@@ -134,23 +151,22 @@ public class CadastroEmpresaService {
         novaEmpresa.setCnpj(encrypt(empresa.getCnpj()));
         novaEmpresa.setEmail(encrypt(empresa.getEmail()));
 
-        Telefone telefone = new Telefone();
-        telefone.setDdd(encrypt(empresa.getTelefone().getDdd()));
-        telefone.setNumero(encrypt(empresa.getTelefone().getNumero()));
+        novaEmpresa.setTelefone(new Telefone());
+        novaEmpresa.getTelefone().setDdd(encrypt(empresa.getTelefone().getDdd()));
+        novaEmpresa.getTelefone().setNumero(encrypt(empresa.getTelefone().getNumero()));
 
-        Login login = new Login();
-        login.setEmail(encrypt(empresa.getEmail()));
-        login.setSenha(encrypt(empresa.getSenha()));
+        novaEmpresa.setLogin(new Login());
+        novaEmpresa.getLogin().setEmail(encrypt(empresa.getLogin().getEmail()));
+        novaEmpresa.getLogin().setSenhaUsuario(encrypt(empresa.getLogin().getSenha()));
         
-        Endereco endereco = new Endereco();
-        endereco.setLogradouro(encrypt(empresa.getEndereco().getLogradouro()));
-        endereco.setNumero(encrypt(empresa.getEndereco().getNumero()));
-        endereco.setComplemento(encrypt(empresa.getEndereco().getComplemento()));
-        endereco.setBairro(encrypt(empresa.getEndereco().getBairro()));
-        endereco.setCidade(encrypt(empresa.getEndereco().getCidade()));
-        endereco.setEstado(encrypt(empresa.getEndereco().getEstado()));
-        endereco.setCep(encrypt(empresa.getEndereco().getCep()));
-        novaEmpresa.setEndereco(endereco);
+        novaEmpresa.setEndereco(new Endereco());
+        novaEmpresa.getEndereco().setLogradouro(encrypt(empresa.getEndereco().getLogradouro()));
+        novaEmpresa.getEndereco().setNumero(encrypt(empresa.getEndereco().getNumero()));
+        novaEmpresa.getEndereco().setComplemento(encrypt(empresa.getEndereco().getComplemento()));
+        novaEmpresa.getEndereco().setBairro(encrypt(empresa.getEndereco().getBairro()));
+        novaEmpresa.getEndereco().setCidade(encrypt(empresa.getEndereco().getCidade()));
+        novaEmpresa.getEndereco().setEstado(encrypt(empresa.getEndereco().getEstado()));
+        novaEmpresa.getEndereco().setCep(encrypt(empresa.getEndereco().getCep()));
         
     }
 

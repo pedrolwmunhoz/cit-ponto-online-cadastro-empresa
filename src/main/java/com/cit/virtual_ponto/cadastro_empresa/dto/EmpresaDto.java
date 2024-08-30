@@ -4,11 +4,6 @@ import lombok.Data;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import java.util.List;
-
-import com.cit.virtual_ponto.cadastro_empresa.models.Endereco;
-import com.cit.virtual_ponto.cadastro_empresa.models.Login;
-import com.cit.virtual_ponto.cadastro_empresa.models.Telefone;
-
 @Data
 public class EmpresaDto extends PessoaDto{
 
