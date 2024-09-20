@@ -10,7 +10,7 @@ public class Login {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_login", nullable = false)
+    @Column(name = "id_login")
     private Integer idLogin;
 
     @Column(name = "email", nullable = false, unique = true)

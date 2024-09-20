@@ -10,10 +10,10 @@ import java.util.List;
 public class PessoaJuridica extends Pessoa {
 
 
-    @Column(name = "nomeFantasia", nullable = false)
+    @Column(name = "nome_fantasia", nullable = false)
     private String nomeFantasia;
 
-    @Column(name = "nomeFantasia", nullable = false)
+    @Column(name = "razao_social", nullable = false)
     private String razaoSocial;
 
     @Column(name = "cnpj", nullable = false, unique = true)

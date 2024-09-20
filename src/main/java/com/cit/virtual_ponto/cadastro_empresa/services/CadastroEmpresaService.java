@@ -159,6 +159,7 @@ public class CadastroEmpresaService {
         novaEmpresa.setTelefone(new Telefone());
         novaEmpresa.getTelefone().setDdd(encrypt(empresa.getTelefone().getDdd()));
         novaEmpresa.getTelefone().setNumero(encrypt(empresa.getTelefone().getNumero()));
+        
         novaEmpresa.setLogin(new Login());
         novaEmpresa.getLogin().setEmail(encrypt(empresa.getLogin().getEmail()));
         novaEmpresa.getLogin().setSenhaUsuario(encrypt(empresa.getLogin().getSenha()));

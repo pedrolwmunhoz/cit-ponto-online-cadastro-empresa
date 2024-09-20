@@ -10,7 +10,7 @@ public class Endereco {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_endereco", nullable = false)
+    @Column(name = "id_endereco")
     private Integer idEndereco;
 
     @Column(name = "logradouro", nullable = false)

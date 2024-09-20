@@ -30,9 +30,6 @@ public class PessoaFisica extends Pessoa {
     @Column(name = "id_cargo", nullable = false)
     private Integer idCargo;
 
-    @Column(name = "id_jornada_trabalho", nullable = false, unique = true)
-    private Integer idJornadaTrabalho;
-
     @Column(name = "id_banco_horas", nullable = false, unique = true)
     private Integer idBancoHoras;
 

@@ -10,7 +10,7 @@ public class Telefone {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_telefone", nullable = false)
+    @Column(name = "id_telefone")
     private Integer idTelefone;
 
     @Column(name = "ddd", nullable = false)
