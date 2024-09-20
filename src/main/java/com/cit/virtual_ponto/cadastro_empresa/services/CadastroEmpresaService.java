@@ -84,11 +84,15 @@ public class CadastroEmpresaService {
             this.setEmpresaFields(empresaAtualizada, empresa);
 
             //salva empresaAtualizada
+            loginRepository.save(empresaAtualizada.getLogin());
+            telefoneRepository.save(empresaAtualizada.getTelefone());
+            enderecoRepository.save(empresaAtualizada.getEndereco());
+            
             return cadastroEmpresaRepository.save(empresaAtualizada);
 
         }  else {
             throw new ErrosSistema.EmpresaException(
-                EnumErrosCadastroEmpresa.EMPRESA_NAO_ENCONTRADO_ID.getMensagemErro());
+                EnumErrosCadastroEmpresa.ID_EMPRESA_NAO_ENCONTRADA.getMensagemErro());
         }
     }
 
@@ -103,7 +107,7 @@ public class CadastroEmpresaService {
             return empresaExcluida;
         } else {
             throw new ErrosSistema.EmpresaException(
-                EnumErrosCadastroEmpresa.EMPRESA_NAO_ENCONTRADO_ID.getMensagemErro());
+                EnumErrosCadastroEmpresa.ID_EMPRESA_NAO_ENCONTRADA.getMensagemErro());
         }
     }
 
@@ -146,7 +150,8 @@ public class CadastroEmpresaService {
     }
 
     private void setEmpresaFields(PessoaJuridica novaEmpresa, EmpresaDto empresa) {
-        novaEmpresa.setNome(encrypt(empresa.getNome()));
+        novaEmpresa.setNomeFantasia(encrypt(empresa.getNomeFantasia()));
+        novaEmpresa.setRazaoSocial(encrypt(empresa.getRazaoSocial()));
         novaEmpresa.setInscricao_estadual(encrypt(empresa.getInscricaoEstadual()));
         novaEmpresa.setCnpj(encrypt(empresa.getCnpj()));
         novaEmpresa.setEmail(encrypt(empresa.getEmail()));
@@ -154,7 +159,6 @@ public class CadastroEmpresaService {
         novaEmpresa.setTelefone(new Telefone());
         novaEmpresa.getTelefone().setDdd(encrypt(empresa.getTelefone().getDdd()));
         novaEmpresa.getTelefone().setNumero(encrypt(empresa.getTelefone().getNumero()));
-
         novaEmpresa.setLogin(new Login());
         novaEmpresa.getLogin().setEmail(encrypt(empresa.getLogin().getEmail()));
         novaEmpresa.getLogin().setSenhaUsuario(encrypt(empresa.getLogin().getSenha()));

@@ -7,6 +7,15 @@ import java.util.List;
 @Data
 public class EmpresaDto extends PessoaDto{
 
+
+    @NotBlank(message = "O nome fantasia não pode ser vazio")
+    @Size(max = 100, message = "O nome fantasia deve ter no máximo 100 caracteres")
+    private String nomeFantasia;
+
+    @NotBlank(message = "A razão social não pode ser vazio")
+    @Size(max = 100, message = "O razão social deve ter no máximo 100 caracteres")
+    private String razaoSocial;
+
     @NotBlank(message = "A inscrição estadual não pode ser vazia")
     @Size(max = 100, message = "A inscrição estadual deve ter no máximo 100 caracteres")
     private String inscricaoEstadual;

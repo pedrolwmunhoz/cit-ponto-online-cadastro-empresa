@@ -11,24 +11,21 @@ public abstract class Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pessoa_id", nullable = false)
-    private Long pessoa_id;
-
-    @Column(name = "nome", nullable = false)
-    private String nome;
+    @Column(name = "id_pessoa", nullable = false)
+    private Integer idPessoa;
 
     @Column(name = "email", nullable = false)
     private String email;
 
     @ManyToOne
-    @JoinColumn(name = "login_id", nullable = false, unique = true)
+    @JoinColumn(name = "id_login", nullable = false, unique = true)
     private Login login;
     
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id", nullable = false, unique = true)
+    @JoinColumn(name = "id_endereco", nullable = false, unique = true)
     private Endereco endereco;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "telefone_id", nullable = false, unique = true)
+    @JoinColumn(name = "id_telefone", nullable = false, unique = true)
     private Telefone telefone;
 }

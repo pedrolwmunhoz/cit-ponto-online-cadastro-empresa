@@ -1,4 +1,5 @@
 package com.cit.virtual_ponto.cadastro_empresa.dto;
+
 import jakarta.validation.constraints.*;
 import lombok.Data;
 

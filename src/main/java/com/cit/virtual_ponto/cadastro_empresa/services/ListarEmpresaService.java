@@ -45,7 +45,7 @@ public class ListarEmpresaService {
             return empresaExistente;
         } else {
             throw new ErrosSistema.EmpresaException(
-                    EnumErrosCadastroEmpresa.EMPRESA_NAO_ENCONTRADO_ID.getMensagemErro() + id);
+                    EnumErrosCadastroEmpresa.ID_EMPRESA_NAO_ENCONTRADA.getMensagemErro() + id);
         }
     }
 
@@ -57,7 +57,7 @@ public class ListarEmpresaService {
 
         // filtra por nome
         List<PessoaJuridica> empresasFiltrada = empresas.stream()
-                .filter(empresa -> nomeEmpresa.equalsIgnoreCase(empresa.getNome()))
+                .filter(empresa -> nomeEmpresa.equalsIgnoreCase(empresa.getNomeFantasia()))
                 .collect(Collectors.toList());
 
         return empresasFiltrada;
@@ -65,7 +65,8 @@ public class ListarEmpresaService {
 
     private void decryptEmpresaFields(PessoaJuridica empresa) {
 
-        empresa.setNome(decrypt(empresa.getNome()));
+        empresa.setNomeFantasia(decrypt(empresa.getNomeFantasia()));
+        empresa.setRazaoSocial(decrypt(empresa.getRazaoSocial()));
         empresa.setInscricao_estadual(decrypt(empresa.getInscricao_estadual()));
         empresa.setCnpj(decrypt(empresa.getCnpj()));
         empresa.setEmail(decrypt(empresa.getEmail()));

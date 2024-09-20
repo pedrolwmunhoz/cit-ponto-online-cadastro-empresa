@@ -42,7 +42,8 @@ public class CadastroEmpresaController {
         // Criação de uma nova empresa com dados fictícios
             EmpresaDto novaEmpresa = new EmpresaDto();
             novaEmpresa.setPessoaId(10);
-            novaEmpresa.setNome("Munhoz Enterprise");
+            novaEmpresa.setNomeFantasia("Munhoz Enterprise");
+            novaEmpresa.setRazaoSocial("LTDA Munhoz Enterprise");
             novaEmpresa.setInscricaoEstadual("123456789");
             novaEmpresa.setCnpj("12.345.678/0001-99");
             novaEmpresa.setEmail("empresa@example.com");

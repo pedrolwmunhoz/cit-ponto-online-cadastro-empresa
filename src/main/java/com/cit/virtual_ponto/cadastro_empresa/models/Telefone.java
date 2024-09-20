@@ -10,8 +10,8 @@ public class Telefone {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "telefone_id", nullable = false)
-    private Integer telefone;
+    @Column(name = "id_telefone", nullable = false)
+    private Integer idTelefone;
 
     @Column(name = "ddd", nullable = false)
     private String ddd;

@@ -47,7 +47,8 @@ public class ValidaLoginEmpresaService {
 
 
     private void decryptEmpresaFields(PessoaJuridica empresa) {
-        empresa.setNome(encryptor.decrypt(empresa.getNome()));
+        empresa.setRazaoSocial(encryptor.decrypt(empresa.getRazaoSocial()));
+        empresa.setNomeFantasia(encryptor.decrypt(empresa.getNomeFantasia()));
         empresa.setInscricao_estadual(encryptor.decrypt(empresa.getInscricao_estadual()));
         empresa.setCnpj(encryptor.decrypt(empresa.getCnpj()));
         empresa.setEmail(encryptor.decrypt(empresa.getEmail()));

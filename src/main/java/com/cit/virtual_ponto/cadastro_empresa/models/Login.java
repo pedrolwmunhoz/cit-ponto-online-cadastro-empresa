@@ -10,8 +10,8 @@ public class Login {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "login_id", nullable = false)
-    private Integer login_id;
+    @Column(name = "id_login", nullable = false)
+    private Integer idLogin;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
@@ -19,6 +19,6 @@ public class Login {
     @Column(name = "senha_usuario", nullable = false)
     private String senhaUsuario;
 
-    @Column(name = "historico_login_id")
-    private Integer historico_login_id;
+    @Column(name = "id_historico_login")
+    private Integer idHistoricoLogin;
 }

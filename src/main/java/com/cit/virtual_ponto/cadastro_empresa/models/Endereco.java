@@ -1,4 +1,5 @@
 package com.cit.virtual_ponto.cadastro_empresa.models;
+
 import lombok.Data;
 import jakarta.persistence.*;
 
@@ -9,8 +10,8 @@ public class Endereco {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "endereco_id", nullable = false)
-    private Integer endereco_id;
+    @Column(name = "id_endereco", nullable = false)
+    private Integer idEndereco;
 
     @Column(name = "logradouro", nullable = false)
     private String logradouro;

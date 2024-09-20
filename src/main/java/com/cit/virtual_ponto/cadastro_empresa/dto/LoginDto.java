@@ -19,5 +19,5 @@ public class LoginDto {
 
     @NotBlank(message = "ID historico login não pode ser vazio")
     @Size(min = 1, max = 100, message = "ID historico login deve conter 1 ou mais caracteres")
-    private String hitorico_login_id;
+    private String id_hitorico_login;
 }

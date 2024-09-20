@@ -1,4 +1,4 @@
-package com.cit.virtual_ponto.cadastro_empresa.models;
+package com.cit.virtual_ponto.cadastro_empresa;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.context.annotation.Bean;

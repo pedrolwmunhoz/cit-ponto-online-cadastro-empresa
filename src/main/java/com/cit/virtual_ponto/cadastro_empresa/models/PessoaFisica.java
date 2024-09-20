@@ -9,6 +9,9 @@ import java.time.LocalDate;
 @Table(name = "pessoa_fisica")
 public class PessoaFisica extends Pessoa {
 
+    @Column(name = "nome", nullable = false)
+    private String nome;
+
     @Column(name = "cpf", nullable = false, unique = true)
     private String cpf;
 
@@ -18,22 +21,22 @@ public class PessoaFisica extends Pessoa {
     @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
-    @Column(name = "folha_pagamento_id", nullable = false, unique = true)
-    private Integer folha_pagamento_id;
+    @Column(name = "id_folha_pagamento", nullable = false, unique = true)
+    private Integer idFolhaPagamento;
 
-    @Column(name = "departamento_id", nullable = false)
-    private Integer departamento_id;
+    @Column(name = "id_departamento", nullable = false)
+    private Integer idDepartamento;
 
-    @Column(name = "cargo_id", nullable = false)
-    private Integer cargo_id;
+    @Column(name = "id_cargo", nullable = false)
+    private Integer idCargo;
 
-    @Column(name = "marcacao_ponto_id", nullable = false, unique = true)
-    private Integer marcacao_ponto_id;
+    @Column(name = "id_jornada_trabalho", nullable = false, unique = true)
+    private Integer idJornadaTrabalho;
 
-    @Column(name = "banco_horas_id", nullable = false, unique = true)
-    private Integer banco_horas_id;
+    @Column(name = "id_banco_horas", nullable = false, unique = true)
+    private Integer idBancoHoras;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "empresa_id")
+    @JoinColumn(name = "id_empresa")
     private PessoaJuridica empresa;
 }

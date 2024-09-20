@@ -9,9 +9,7 @@ public abstract class PessoaDto {
 
     private Integer pessoaId;
 
-    @NotBlank(message = "Nome não pode ser vazio")
-    @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres")
-    private String nome;
+
 
     @NotBlank(message = "O email não pode ser vazio")
     @Email(message = "O email deve ser válido")
