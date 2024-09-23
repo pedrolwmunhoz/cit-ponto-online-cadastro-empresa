@@ -29,6 +29,7 @@ public class CadastroEmpresaService {
     private TelefoneRepository telefoneRepository;
     private EnderecoRepository enderecoRepository;
     private LoginRepository loginRepository;
+    private HashService hashService;
 
     private StringEncryptor encryptor;
 
@@ -42,12 +43,14 @@ public class CadastroEmpresaService {
             CadastroEmpresaRepository cadastroEmpresaRepository, 
             TelefoneRepository telefoneRepository,
             EnderecoRepository enderecoRepository,
-            LoginRepository loginRepository
+            LoginRepository loginRepository,
+            HashService hashService
             ) {
         this.cadastroEmpresaRepository = cadastroEmpresaRepository;
         this.telefoneRepository = telefoneRepository;
         this.enderecoRepository = enderecoRepository;
         this.loginRepository = loginRepository;
+        this.hashService = hashService;
     }
 
     //metodo responsavel por cadastrar empresa
@@ -122,26 +125,26 @@ public class CadastroEmpresaService {
         }
 
         // Verifica se o email já está cadastrado
-        String email = this.encrypt(empresa.getEmail());
-        Optional<PessoaJuridica> optionalEmpresaByEmail = cadastroEmpresaRepository.findByEmail(email);
-        if (optionalEmpresaByEmail.isPresent()) {
+        String email = empresa.getEmail();
+        Optional<Login> optionalLogin = loginRepository.findByHashEmail(hashService.generateHash(email));
+        if (optionalLogin.isPresent()) {
             throw new ErrosSistema.EmpresaException(
                     "Email já cadastrado.");
         }
 
         // Verifica se o cnpj já está cadastrado
-        String cnpj = this.encrypt(empresa.getCnpj());
-        Optional<PessoaJuridica> optionalEmpresaByNome = cadastroEmpresaRepository.findByCnpj(cnpj);
+        String cnpj = empresa.getCnpj();
+        Optional<PessoaJuridica> optionalEmpresaByNome = cadastroEmpresaRepository.findByHashCnpj(hashService.generateHash(cnpj));
         if (optionalEmpresaByNome.isPresent()) {
             throw new ErrosSistema.EmpresaException(
                     "Cnpj já cadastrado.");
         }
 
         // Verifica se o telefone já está cadastrado
-        String ddd = this.encrypt(empresa.getTelefone().getDdd());
-        String telefone = this.encrypt(empresa.getTelefone().getNumero());
+        String ddd = empresa.getTelefone().getDdd();
+        String telefone = empresa.getTelefone().getNumero();
         Optional<Telefone> optionalTelefone = telefoneRepository
-                .findByDddAndNumero(ddd, telefone);
+                .findByHashDddNumero(ddd+telefone);
         if (optionalTelefone.isPresent()) {
             throw new ErrosSistema.EmpresaException(
                     "Telefone já cadastrado.");
@@ -151,19 +154,30 @@ public class CadastroEmpresaService {
 
     private void setEmpresaFields(PessoaJuridica novaEmpresa, EmpresaDto empresa) {
         novaEmpresa.setNomeFantasia(encrypt(empresa.getNomeFantasia()));
+        novaEmpresa.setHashNomeFantaia(hashService.generateHash((empresa.getNomeFantasia())));
         novaEmpresa.setRazaoSocial(encrypt(empresa.getRazaoSocial()));
         novaEmpresa.setInscricao_estadual(encrypt(empresa.getInscricaoEstadual()));
         novaEmpresa.setCnpj(encrypt(empresa.getCnpj()));
-        novaEmpresa.setEmail(encrypt(empresa.getEmail()));
+        novaEmpresa.setHashCnpj(hashService.generateHash((empresa.getCnpj())));
 
+        //telefone
         novaEmpresa.setTelefone(new Telefone());
         novaEmpresa.getTelefone().setDdd(encrypt(empresa.getTelefone().getDdd()));
         novaEmpresa.getTelefone().setNumero(encrypt(empresa.getTelefone().getNumero()));
-        
+        //hash
+        novaEmpresa.getTelefone().setHashDddNumero(hashService.generateHash(empresa.getTelefone().getDdd() + empresa.getTelefone().getNumero()));
+
+        //login
         novaEmpresa.setLogin(new Login());
         novaEmpresa.getLogin().setEmail(encrypt(empresa.getLogin().getEmail()));
         novaEmpresa.getLogin().setSenhaUsuario(encrypt(empresa.getLogin().getSenha()));
+        novaEmpresa.getLogin().setIdHistoricoLogin(1);
         
+
+        //hash
+        novaEmpresa.getLogin().setHashEmail(hashService.generateHash((empresa.getEmail())));
+        
+        //endereco
         novaEmpresa.setEndereco(new Endereco());
         novaEmpresa.getEndereco().setLogradouro(encrypt(empresa.getEndereco().getLogradouro()));
         novaEmpresa.getEndereco().setNumero(encrypt(empresa.getEndereco().getNumero()));
@@ -172,11 +186,12 @@ public class CadastroEmpresaService {
         novaEmpresa.getEndereco().setCidade(encrypt(empresa.getEndereco().getCidade()));
         novaEmpresa.getEndereco().setEstado(encrypt(empresa.getEndereco().getEstado()));
         novaEmpresa.getEndereco().setCep(encrypt(empresa.getEndereco().getCep()));
-        
+        //hash
+        novaEmpresa.getEndereco().setHashLogradouro(hashService.generateHash((empresa.getEndereco().getLogradouro())));
+        novaEmpresa.getEndereco().setHashCep(hashService.generateHash((empresa.getEndereco().getCep())));
     }
 
     public String encrypt(String encryptedValue) {
         return encryptor.encrypt(encryptedValue);
     }
-
 }

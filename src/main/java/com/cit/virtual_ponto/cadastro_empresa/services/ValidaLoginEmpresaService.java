@@ -1,6 +1,5 @@
 package com.cit.virtual_ponto.cadastro_empresa.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.jasypt.encryption.StringEncryptor;
@@ -10,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.cit.virtual_ponto.cadastro_empresa.dto.LoginDto;
 import com.cit.virtual_ponto.cadastro_empresa.exceptions.ErrosSistema;
+import com.cit.virtual_ponto.cadastro_empresa.models.Login;
 import com.cit.virtual_ponto.cadastro_empresa.models.PessoaJuridica;
 import com.cit.virtual_ponto.cadastro_empresa.repositories.CadastroEmpresaRepository;
+import com.cit.virtual_ponto.cadastro_empresa.repositories.LoginRepository;
 
 @Service
 public class ValidaLoginEmpresaService {
@@ -25,17 +26,21 @@ public class ValidaLoginEmpresaService {
     @Autowired
     private CadastroEmpresaRepository cadastroEmpresaRepository;
 
+    @Autowired
+    private LoginRepository loginRepository;
+
+    @Autowired
+    private HashService hashService;
+
     public PessoaJuridica validarLogin(LoginDto loginRequestDto) {
-        List<PessoaJuridica> empresas = cadastroEmpresaRepository.findAll();
+        Optional<Login> optionalLogin = loginRepository.findByHashEmail(hashService.generateHash(loginRequestDto.getEmail()));
 
-        Optional<PessoaJuridica> empresaOptional = empresas.stream()
-                .filter(empresa -> encryptor.decrypt(empresa.getEmail()).equals(loginRequestDto.getEmail()))
-                .findFirst();
+        if (optionalLogin.isPresent()) {
+            Login login = optionalLogin.get();
 
-        if (empresaOptional.isPresent()) {
-            PessoaJuridica empresa = empresaOptional.get();
+            PessoaJuridica empresa = cadastroEmpresaRepository.findById(login.getIdLogin()).get();
 
-            String senhaDescriptografada = encryptor.decrypt(empresa.getLogin().getSenhaUsuario());
+            String senhaDescriptografada = encryptor.decrypt(login.getSenhaUsuario());
 
             if (senhaDescriptografada.equals(loginRequestDto.getSenha())) {
                 this.decryptEmpresaFields(empresa);
@@ -51,7 +56,6 @@ public class ValidaLoginEmpresaService {
         empresa.setNomeFantasia(encryptor.decrypt(empresa.getNomeFantasia()));
         empresa.setInscricao_estadual(encryptor.decrypt(empresa.getInscricao_estadual()));
         empresa.setCnpj(encryptor.decrypt(empresa.getCnpj()));
-        empresa.setEmail(encryptor.decrypt(empresa.getEmail()));
 
         empresa.getTelefone().setDdd(encryptor.decrypt(empresa.getTelefone().getDdd()));
         empresa.getTelefone().setNumero(encryptor.decrypt(empresa.getTelefone().getNumero()));

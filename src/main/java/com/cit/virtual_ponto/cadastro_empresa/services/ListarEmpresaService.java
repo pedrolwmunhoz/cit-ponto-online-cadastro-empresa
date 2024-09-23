@@ -51,13 +51,15 @@ public class ListarEmpresaService {
 
     public List<PessoaJuridica> buscarEmpresaPorNome(String nomeEmpresa) {
 
+        String nomePesquisa = nomeEmpresa.trim().toLowerCase();
         // recupera lista de todas as empresas
         List<PessoaJuridica> empresas = cadastroEmpresaRepository.findAll();
         empresas.forEach(this::decryptEmpresaFields);
 
         // filtra por nome
-        List<PessoaJuridica> empresasFiltrada = empresas.stream()
-                .filter(empresa -> nomeEmpresa.equalsIgnoreCase(empresa.getNomeFantasia()))
+        List<PessoaJuridica> empresasFiltrada 
+                = empresas.stream()
+                .filter(empresa -> empresa.getNomeFantasia().trim().toLowerCase().startsWith(nomePesquisa))
                 .collect(Collectors.toList());
 
         return empresasFiltrada;
@@ -69,7 +71,6 @@ public class ListarEmpresaService {
         empresa.setRazaoSocial(decrypt(empresa.getRazaoSocial()));
         empresa.setInscricao_estadual(decrypt(empresa.getInscricao_estadual()));
         empresa.setCnpj(decrypt(empresa.getCnpj()));
-        empresa.setEmail(decrypt(empresa.getEmail()));
 
         empresa.getTelefone().setDdd(decrypt(empresa.getTelefone().getDdd()));
         empresa.getTelefone().setNumero(decrypt(empresa.getTelefone().getNumero()));

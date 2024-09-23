@@ -9,5 +9,5 @@ import com.cit.virtual_ponto.cadastro_empresa.models.Telefone;
 public interface TelefoneRepository extends JpaRepository<Telefone, Integer>{
 
 
-    Optional<Telefone> findByDddAndNumero(String ddd, String numero);
+    Optional<Telefone> findByHashDddNumero(String hashDddNumero);
 }

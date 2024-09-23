@@ -13,6 +13,9 @@ public class Endereco {
     @Column(name = "id_endereco")
     private Integer idEndereco;
 
+    @Column(name = "hash_logradouro", nullable = false, unique = true)
+    private String hashLogradouro;
+
     @Column(name = "logradouro", nullable = false)
     private String logradouro;
 
@@ -30,6 +33,9 @@ public class Endereco {
 
     @Column(name = "estado", nullable = false)
     private String estado;
+
+    @Column(name = "hash_cep", nullable = false, unique = true)
+    private String hashCep;
 
     @Column(name = "cep", nullable = false)
     private String cep;

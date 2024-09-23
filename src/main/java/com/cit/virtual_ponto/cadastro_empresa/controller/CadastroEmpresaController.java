@@ -94,9 +94,9 @@ public class CadastroEmpresaController {
         return ResponseEntity.ok(empresas);
     }
 
-    @GetMapping("/buscar-nome/{nomeEmpresa}")
+    @GetMapping("/buscar-nome")
     public ResponseEntity<List<PessoaJuridica>> buscarEmpresaPorNome(
-            @PathVariable @NotBlank(message = "O nome da empresa não pode ser vazio") @Size(min = 2, max = 100, message = "O nome da empresa deve ter entre 2 e 100 caracteres") String nomeEmpresa) {
+            @RequestParam @NotBlank(message = "O nome da empresa não pode ser vazio") @Size(min = 2, max = 100, message = "O nome da empresa deve ter entre 2 e 100 caracteres") String nomeEmpresa) {
         List<PessoaJuridica> empresas = listarEmpresaService.buscarEmpresaPorNome(nomeEmpresa);
         return ResponseEntity.ok(empresas);
     }

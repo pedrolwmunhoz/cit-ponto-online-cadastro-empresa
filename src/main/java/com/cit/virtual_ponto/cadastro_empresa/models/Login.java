@@ -13,12 +13,15 @@ public class Login {
     @Column(name = "id_login")
     private Integer idLogin;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "hash_email", nullable = false, unique = true)
+    private String hashEmail;
+
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "senha_usuario", nullable = false)
     private String senhaUsuario;
 
-    @Column(name = "id_historico_login")
+    @Column(name = "id_historico_login", nullable = false, unique = true)
     private Integer idHistoricoLogin;
 }

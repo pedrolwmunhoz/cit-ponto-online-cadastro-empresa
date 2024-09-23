@@ -1,6 +1,9 @@
 package com.cit.virtual_ponto.cadastro_empresa.models;
 
 import lombok.Data;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Data
@@ -13,10 +16,7 @@ public abstract class Pessoa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pessoa")
     private Integer idPessoa;
-
-    @Column(name = "email", nullable = false)
-    private String email;
-
+    
     @ManyToOne
     @JoinColumn(name = "id_login", nullable = false, unique = true)
     private Login login;
